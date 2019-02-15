@@ -1,6 +1,8 @@
 import time
 
 import selenium
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
 
 # Get driver
@@ -12,7 +14,8 @@ time.sleep(2)
 
 # Input author
 driver.find_element_by_css_selector(".formControls > .inputTextLabel").click()
-drive.find_element_by_css_selector("#lastname").send_keys("Han")
+time.sleep(1)
+driver.find_element_by_css_selector(".formControls > .inputTextLabel").send_keys("Han")
 
 driver.quit()
 
