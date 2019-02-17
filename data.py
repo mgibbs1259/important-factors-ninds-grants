@@ -6,9 +6,9 @@ import re
 import pandas as pd
 import numpy as np
 import scopus
-# from scopus import AuthorSearch
-# from scopus import AuthorRetrieval
-# from scopus import ContentAffiliationRetrieval
+from scopus import AuthorSearch
+from scopus import AuthorRetrieval
+from scopus import ContentAffiliationRetrieval
 
 
 # NIH data
@@ -49,25 +49,17 @@ def name_split(pi):
 
 scopus_search_names = nih_pi.apply(name_split)
 
-print(test.iloc[0][0])
-
-
-
-'''nih_first = [nih_pi_last_first[1][1].split(' ') for s in nih_pi_last_first]
-first = nih_first[0][1].title()
-middle = nih_first[0][2][0].title()
-'''
 
 # Scopus data
 
 scopus_series_list = []
 
-'''n = 0
+
 for i in range(0, len(nih_pi)):
 
     # Use AuthorSearch
     try:
-        scopus_authors = AuthorSearch('AUTHLAST(' + nih_pi_last_first[n][0].title() + ') and AUTHFIRST(' + nih_pi_last_first[n][1].title() + ')', refresh = True)
+        scopus_authors = AuthorSearch('AUTHLAST(' + scopus_search_names.iloc[i][1].title() + ') and AUTHFIRST(' + scopus_search_names.iloc[i][0].title() + ')', refresh = True)
         df = pd.DataFrame(scopus_authors.authors)
        
         df = df.iloc[0, :] 
@@ -99,12 +91,9 @@ for i in range(0, len(nih_pi)):
         print(scopus_series)
         scopus_series_list.append(scopus_series)
         time.sleep(2)
-        n = n + 1
+
 
     except:
         pass
 
 
-# Create Scopus series
-scopus_series = pd.Series(scopus_dict)
-print(scopus_series)'''
