@@ -78,7 +78,7 @@ for i in range(0, len(nih_pi)):
         aff_current = ContentAffiliationRetrieval(aff_current_ID)
 
         # Create Scopus dictionary
-        scopus_dict = {'name': au.given_name + ' ' + au.surname, 'scopus_id': scopus_id,
+        scopus_dict = {'name': ascopus_search_names.iloc[i][0].title() + ' ' + scopus_search_names.iloc[i][1].title(), 'scopus_id': scopus_id,
                        'document_count': au.document_count, 'citation_count': au.citation_count,
                        'h_index': au.h_index, 'begin_publication_range': au.publication_range[0],
                        'end_publication_range': au.publication_range[1], 'aff_current_name': aff_current.affiliation_name,
