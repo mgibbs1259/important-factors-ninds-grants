@@ -24,46 +24,34 @@ nih_data.columns = nih_data.columns.str.replace(')','')
 
 # Get Contact PI/Project Leader
 nih_pi = nih_data['contact_pi_/_project_leader']
-# nih_pi_split = nih_pi.iloc[0].split(', ')
-# nih_pi_last = nih_pi_split[0].title()
-# nih_pi_middle = nih_pi_split[1].lstrip().split(' ')[1].title()[0]
-# nih_pi_first = nih_pi_split[1].lstrip().split(' ')[0].title()
-# print("first: " + nih_pi_first)
-# print("middle: " + nih_pi_middle)
-# print("last: " + nih_pi_last)
+
 
 def name_split(pi):
-    nih_pi_split = pi.split(', ')
-    if len(nih_pi_split[1].split()) > 1:
-        last = nih_pi_split[0].title()
-        middle = nih_pi_split[1].lstrip().split(' ')[1].title()[0]
-        first = nih_pi_split[1].lstrip().split(' ')[0].title()
+
+    if "," not in pi:
+        pass
+
     else:
-        last = nih_pi_split[0].title()
-        middle = ""
-        first = nih_pi_split[1].lstrip().title()
+        nih_pi_split = pi.split(', ')
+        if len(nih_pi_split[1].split()) > 1:
+            last = nih_pi_split[0].title()
+            middle = nih_pi_split[1].lstrip().split(' ')[1].title()[0]
+            first = nih_pi_split[1].lstrip().split(' ')[0].title()
+        else:
+            last = nih_pi_split[0].title()
+            middle = ""
+            first = nih_pi_split[1].lstrip().title()
 
-    first_middle = first + " " + middle
-    #print(first_middle, last)
-    return first_middle, last
-
-print(nih_pi[0][0])
-
-# print(type(nih_pi.iloc[0]))
-# print(nih_pi.map(lambda x: name_split(x)).head())
-# print(nih_pi.iloc[4].split(', '))
-print(nih_pi[0].apply(name_split))
-# print(nih_pi[1])
-# print(nih_pi[0].apply(name_split))
-# print(nih_pi.head())
+        first_middle = first + " " + middle
+        # print(first_middle, last)
+        return [first_middle, last]
 
 
+scopus_search_names = nih_pi.apply(name_split)
 
-# nih_pi_split = [s.split(',') for s in nih_pi]
-# nih_first = [nih_pi_split[1][1].split(' ') for s in nih_pi_split]
-# print(nih_pi.iloc[0])
-# print(nih_pi_split[0][1].lstrip())
-# print(nih_first[1])
+print(test.iloc[0][0])
+
+
 
 '''nih_first = [nih_pi_last_first[1][1].split(' ') for s in nih_pi_last_first]
 first = nih_first[0][1].title()
@@ -119,4 +107,4 @@ for i in range(0, len(nih_pi)):
 
 # Create Scopus series
 scopus_series = pd.Series(scopus_dict)
-print(scopus_series)
+print(scopus_series)'''
