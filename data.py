@@ -53,4 +53,4 @@ scopus_dict = {'name': au.given_name + ' ' + au.surname, 'scopus_id': scopus_id,
 
 # Create Scopus series
 scopus_series = pd.Series(scopus_dict)
-#print(scopus_series)
+print(scopus_series)
