@@ -11,7 +11,7 @@ from scopus import AuthorRetrieval
 from scopus import ContentAffiliationRetrieval
 
 
-# NIH data
+# NIH DATA
 
 # Create nih dataframe
 files_list = glob.glob("data/*.csv")
@@ -25,12 +25,10 @@ nih_data.columns = nih_data.columns.str.replace(')','')
 # Get Contact PI/Project Leader
 nih_pi = nih_data['contact_pi_/_project_leader']
 
-
+# Create function to return name in first_middle last format
 def name_split(pi):
-
     if "," not in pi:
         pass
-
     else:
         nih_pi_split = pi.split(', ')
         if len(nih_pi_split[1].split()) > 1:
@@ -41,22 +39,24 @@ def name_split(pi):
             last = nih_pi_split[0].title()
             middle = ""
             first = nih_pi_split[1].lstrip().title()
-
         first_middle = first + " " + middle
-        # print(first_middle, last)
         return [first_middle, last]
 
-
+# Apply function to nih_pi
 scopus_search_names = nih_pi.apply(name_split)
-nih_data_with_scopus_idx = pd.merge(nih_data, pd.DataFrame(scopus_search_names), left_index=True, right_index=True)
-# nih_data_with_scopus_idx["contact_pi_/_project_leader_y"] = nih_data_with_scopus_idx["contact_pi_/_project_leader_y"].rename(idx=str, columns={"contact_pi_/_project_leader_y": "scopus_idx"})
-# nih_data_with_scopus_idx = nih_data.join(pd.DataFrame(scopus_search_names))
-print(nih_data_with_scopus_idx.head())
 
-# Scopus data
+# Append scopus_search_names to nih_data
+scopus_idx = pd.DataFrame(scopus_search_names)
+scopus_idx.columns = ['scopus_idx']
+nih_data = nih_data.join(scopus_idx)
+
+# Get unique names from nih_data
+
+
+
+# Scopus DATA
 
 scopus_series_list = []
-
 
 # for i in range(0, len(nih_pi)):
 #
@@ -95,6 +95,7 @@ scopus_series_list = []
 #         scopus_series_list.append(scopus_series)
 #         time.sleep(2)
 #
+#        # Out as csv
 #
 #     except:
 #         pass
