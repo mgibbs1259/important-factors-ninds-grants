@@ -5,27 +5,13 @@ import re
 
 import pandas as pd
 import numpy as np
-import scopus
-from scopus import AuthorSearch
-from scopus import AuthorRetrieval
-from scopus import ContentAffiliationRetrieval
+# import scopus
+# from scopus import AuthorSearch
+# from scopus import AuthorRetrieval
+# from scopus import ContentAffiliationRetrieval
 
 
-# NIH DATA
-
-# Create nih dataframe
-files_list = glob.glob("data/*.csv")
-nih_data = pd.concat(map(lambda file: pd.read_csv(file, encoding = "cp1252"), files_list))
-nih_data = nih_data.apply(lambda x: x.astype(str).str.lower())
-nih_data.columns = map(str.lower, nih_data.columns)
-nih_data.columns = nih_data.columns.str.replace(' ', '_')
-nih_data.columns = nih_data.columns.str.replace('(','')
-nih_data.columns = nih_data.columns.str.replace(')','')
-
-# Get Contact PI/Project Leader
-nih_pi = nih_data['contact_pi_/_project_leader']
-
-# Create function to return name in first_middle last format
+# Create function to return name as first_middle last format
 def name_split(pi):
     if "," not in pi:
         pass
@@ -42,21 +28,24 @@ def name_split(pi):
         first_middle = first + " " + middle
         return [first_middle, last]
 
-# Apply function to nih_pi
-scopus_search_names = nih_pi.apply(name_split)
 
-# Append scopus_search_names to nih_data
-scopus_idx = pd.DataFrame(scopus_search_names)
-scopus_idx.columns = ['scopus_idx']
-nih_data = nih_data.join(scopus_idx)
+# Get ninds pi
+ninds_df = pd.read_csv("data/ninds_data.csv")
+ninds_df.columns = map(str.lower, ninds_df.columns)
+ninds_pi = ninds_df.loc[:, "contact pi / project leader"]
+
+
+# Apply function to ninds pi
+#scopus_pi = ninds_pi.apply(name_split)
+
 
 # Get unique names from nih_data
-
-
+#scopus_search = scopus_pi.unique()
+#print(scopus_search)
 
 # Scopus DATA
 
-scopus_series_list = []
+#scopus_series_list = []
 
 # for i in range(0, len(nih_pi)):
 #
