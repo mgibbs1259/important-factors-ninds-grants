@@ -1,4 +1,3 @@
 # ML1-Final-Project
 
-https://docs.google.com/spreadsheets/d/1QoCffd2vhrEKi3Z9g9pqsj5iQfLb4M5V8MWQmBbCDkU/edit#gid=856954772
-
+https://drive.google.com/drive/folders/12q76QheYdLG5rSzSMVtjFcYU1gxu1RIk?usp=sharing
