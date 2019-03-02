@@ -6,7 +6,7 @@ from scopus import AuthorRetrieval
 from scopus import ContentAffiliationRetrieval
 
 
-# Create format name function
+# Create format name function - FIX
 def format_name(pi):
     if ',' not in pi:
         pass
@@ -73,7 +73,7 @@ for i in range(0, 5):
         aff_current = ContentAffiliationRetrieval(aff_current_ID)
 
         # Create Scopus dictionary
-        scopus_dict = {'scopus idx': scopus_search[i], 'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
+        scopus_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)], 'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
                        'scopus_id': scopus_id, 'document_count': au.document_count, 'coauthor_count': au.coauthor_count, 'citation_count': au.citation_count,
                        'h_index': au.h_index, 'begin_publication_range': au.publication_range[0],
                        'end_publication_range': au.publication_range[1], 'aff_current_name': aff_current.affiliation_name,
@@ -93,7 +93,7 @@ for i in range(0, 5):
         # Append coauthors to coauthors df
         coauthors_df = coauthors_df.append(coauth)
 
-        # Get journals
+        # Get journals - FIX
         journals = pd.DataFrame(au.get_document_eids(refresh = False))
         auth_journals = [scopus_search[i] for n in range(journals.shape[0] + 1)]
         journals['scopus_idx'] = pd.Series(auth_journals)
@@ -105,7 +105,7 @@ for i in range(0, 5):
         former_aff = au.affiliation_history
         for aff in former_aff:
             aff_ret = ContentAffiliationRetrieval(aff)
-            former_aff_dict = {'scopus idx': scopus_search[i], 'aff_name': aff_ret.affiliation_name,
+            former_aff_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)], 'aff_name': aff_ret.affiliation_name,
                                    'aff_city': aff_ret.city, 'aff_state': aff_ret.state, 'aff_country': aff_ret.country,
                                    'aff_author_count': aff_ret.author_count, 'aff_document_count': aff_ret.document_count}
             former_aff_dict_df = pd.DataFrame.from_dict(former_aff_dict)
@@ -114,7 +114,7 @@ for i in range(0, 5):
     except:
         print('empty')
         # Create empty Scopus dictionary
-        empty_scopus_dict = {'scopus idx': scopus_search[i], 'name': scopus_search[i][0].title() + ' ' + scopus_search[i][1].title(),
+        empty_scopus_dict = {'scopus idx': scopus_search[i], 'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
                               'scopus_id': 'NA', 'document_count': 'NA', 'coauthor_count': 'NA', 'citation_count': 'NA',
                               'h_index': 'NA', 'begin_publication_range': 'NA',
                               'end_publication_range': 'NA', 'aff_current_name': 'NA',
