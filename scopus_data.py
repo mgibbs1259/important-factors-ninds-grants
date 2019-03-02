@@ -76,12 +76,24 @@ for i in range(0, 25):
         aff_current = ContentAffiliationRetrieval(aff_current_ID)
 
         # Create Scopus dictionary
-        scopus_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)], 'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
-                       'scopus_id': scopus_id, 'document_count': au.document_count, 'coauthor_count': au.coauthor_count, 'citation_count': au.citation_count,
-                       'h_index': au.h_index, 'begin_publication_range': au.publication_range[0],
-                       'end_publication_range': au.publication_range[1], 'aff_current_name': scopus_author_df['affiliation'],
-                       'aff_current_city': scopus_author_df['city'], 'aff_current_state': aff_current.state,
-                       'aff_current_auth_count': scopus_author_df['country'], 'aff_current_doc_count': aff_current.document_count}
+        scopus_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)],
+                       'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
+                       'scopus_id': scopus_id,
+                       'document_count': au.document_count,
+                       'coauthor_count': au.coauthor_count,
+                       'citation_count': au.citation_count,
+                       'h_index': au.h_index,
+                       'begin_publication_range': au.publication_range[0],
+                       'end_publication_range': au.publication_range[1],
+                       'aff_current_name_from_df': scopus_author_df['affiliation'],
+                       'aff_current_city_from_df': scopus_author_df['city'],
+                       'aff_current_country_from_df': scopus_author_df['country'],
+                       'aff_current_name_from_id': aff_current.affiliation_name,
+                       'aff_current_city_from_id': aff_current.city,
+                       'aff_current_state_from_id': aff_current.state,
+                       'aff_current_country_from_id': aff_current.country,
+                       'aff_current_auth_count': aff_current.author_count,
+                       'aff_current_doc_count': aff_current.document_count}
 
         # Append scopus dict to scopus df
         scopus_dict_df = pd.DataFrame.from_dict(scopus_dict)
@@ -109,24 +121,16 @@ for i in range(0, 25):
         for aff in former_aff:
             aff_ret = ContentAffiliationRetrieval(aff)
             former_aff_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)], 'aff_name': aff_ret.affiliation_name,
-                                   'aff_city': aff_ret.city, 'aff_state': aff_ret.state, 'aff_country': aff_ret.country,
-                                   'aff_author_count': aff_ret.author_count, 'aff_document_count': aff_ret.document_count}
+                               'aff_city': aff_ret.city,
+                               'aff_state': aff_ret.state,
+                               'aff_country': aff_ret.country,
+                               'aff_author_count': aff_ret.author_count,
+                               'aff_document_count': aff_ret.document_count}
             former_aff_dict_df = pd.DataFrame.from_dict(former_aff_dict)
             affiliations_df = affiliations_df.append(former_aff_dict_df)
 
     except:
         print('error')
-        # Create empty Scopus dictionary
-        empty_scopus_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)], 'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
-                              'scopus_id': 'NA', 'document_count': 'NA', 'coauthor_count': 'NA', 'citation_count': 'NA',
-                              'h_index': 'NA', 'begin_publication_range': 'NA',
-                              'end_publication_range': 'NA', 'aff_current_name': 'NA',
-                              'aff_current_city': 'NA', 'aff_current_state': 'NA',
-                              'aff_current_auth_count': 'NA', 'aff_current_doc_count': 'NA'}
-        
-        # Append empty scopus dict to scopus df
-        empty_scopus_dict_df = pd.DataFrame.from_dict(empty_scopus_dict)
-        scopus_df.append(empty_scopus_dict_df)
 
 scopus_df.to_csv('scopus_data_0_25.csv')
 coauthors_df.to_csv('coauthors_data_0_25.csv')
