@@ -1,8 +1,3 @@
-import glob
-import os
-import time
-import re
-
 import pandas as pd
 import numpy as np
 import scopus
@@ -54,9 +49,10 @@ scopus_search = scopus_pi.unique()
 scopus_df = pd.DataFrame()
 coauthors_df = pd.DataFrame()
 journals_df = pd.DataFrame()
+affiliations_df = pd.DataFrame()
 
 # Range - 0 to 4900, 4901 to 9800, 9801 to 14700, 14701 to last
-'''for i in range(0, len(scopus_search.iloc[0:25, :])): 
+for i in range(0, len(scopus_search.iloc[0:25, :])):
     
     try:
     
@@ -80,35 +76,43 @@ journals_df = pd.DataFrame()
         aff_current = ContentAffiliationRetrieval(aff_current_ID)
         
         # Create Scopus dictionary
-        scopus_dict = {'scopus idx': scopus_search[i],
-        'name': scopus_search[i][0].title() + ' ' + scopus_search[i][1].title(), 
-        'scopus_id': scopus_id,'document_count': au.document_count, 'citation_count': au.citation_count,
-        'h_index': au.h_index, 'begin_publication_range': au.publication_range[0],
-        'end_publication_range': au.publication_range[1], 'aff_current_name': aff_current.affiliation_name,
-        'aff_current_city': aff_current.city, 'aff_current_state': aff_current.state,
-        'aff_current_auth_count': aff_current.author_count, 'aff_current_doc_count': aff_current.document_count}
+        scopus_dict = {'scopus idx': scopus_search[i], 'name': scopus_search[i][0].title() + ' ' + scopus_search[i][1].title(),
+                       'scopus_id': scopus_id,'document_count': au.document_count, 'citation_count': au.citation_count,
+                       'h_index': au.h_index, 'begin_publication_range': au.publication_range[0],
+                       'end_publication_range': au.publication_range[1], 'aff_current_name': aff_current.affiliation_name,
+                       'aff_current_city': aff_current.city, 'aff_current_state': aff_current.state,
+                       'aff_current_auth_count': aff_current.author_count, 'aff_current_doc_count': aff_current.document_count}
 
         # Append scopus dict to scopus df
         scopus_dict_df = pd.DataFrame.from_dict(scopus_dict)
         scopus_df.append(scopus_dict_df)
-        time.sleep(2)
     
         # Get coauthors
         coauth = pd.DataFrame(au.get_coauthors())
         auth_coauth = [scopus_search[i] for n in range(couth.shape[0] + 1)]
-        coauth['name'] = pd.Series(auth_coauth)
+        coauth['scopus_idx'] = pd.Series(auth_coauth)
         
         # Append coauthors to coauthors df
         coauthors_df.append(coauth)
         
         # Get journals
-        journals = pd.DataFrame(au.get_document_eids(refresh=False))
+        journals = pd.DataFrame(au.get_document_eids(refresh = False))
         auth_journals = [scopus_search[i] for n in range(journals.shape[0] + 1)]
-        journals['name'] = pd.Series(auth_journals)
+        journals['scopus_idx'] = pd.Series(auth_journals)
         
         # Append coauthors to coauthors df
         journals_df.append(journals)
         
+        # Get former affiliations
+        former_aff = au.affiliation_history
+        for aff in former_aff:
+            aff_ret = ContentAffiliationRetrieval(aff)
+            former_aff_dict = {'scopus idx': scopus_search[i], 'aff_name': aff_ret.affiliation_name,
+                               'aff_city': aff_ret.city, 'aff_state': aff_ret.state, 'aff_country': aff_ret_country,
+                               'aff_author_count': aff_ret.author_count, 'aff_document_count': aff_ret.document_count}
+            former_aff_dict_df = pd.DataFrame.from_dict(former_aff_dict)
+            affiliations_df.append(former_aff_dict_df)
+
     except:
         
         # Create empty Scopus dictionary 
@@ -123,10 +127,10 @@ journals_df = pd.DataFrame()
         # Append empty scopus dict to scopus df
         scopus_dict_df = pd.DataFrame.from_dict(scopus_dict)
         scopus_df.append(scopus_dict_df)
-        time.sleep(2)
+
 
 scopus_df.to_csv('scopus_data_0_25.csv')
 coauthors_df.to_csv('coauthors_data_0_25.csv')
 journals_df.to_csv('journals_data_0_25.csv')
-'''
+affiliations_df.to_csv('affiliations_data_0_25.csv')
 
