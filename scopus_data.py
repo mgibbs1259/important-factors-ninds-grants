@@ -93,8 +93,8 @@ for i in range(0, 5):
         # Append coauthors to coauthors df
         coauthors_df = coauthors_df.append(coauth)
 
-        # Get journals - FIX
-        journals = pd.DataFrame(au.get_document_eids(refresh = False))
+        # Get journals
+        journals = pd.DataFrame(au.get_documents())
         auth_journals = [scopus_search[i] for n in range(journals.shape[0] + 1)]
         journals['scopus_idx'] = pd.Series(auth_journals)
 
@@ -112,9 +112,9 @@ for i in range(0, 5):
             affiliations_df = affiliations_df.append(former_aff_dict_df)
 
     except:
-        print('empty')
+        print('error')
         # Create empty Scopus dictionary
-        empty_scopus_dict = {'scopus idx': scopus_search[i], 'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
+        empty_scopus_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)], 'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
                               'scopus_id': 'NA', 'document_count': 'NA', 'coauthor_count': 'NA', 'citation_count': 'NA',
                               'h_index': 'NA', 'begin_publication_range': 'NA',
                               'end_publication_range': 'NA', 'aff_current_name': 'NA',
