@@ -43,6 +43,8 @@ scopus_search = scopus_pi.unique()
 # print(len(scopus_search))
 # 15499 scopus search names
 
+print(scopus_search[0:25])
+
 # Get Scopus data
 
 scopus_df = pd.DataFrame()
@@ -51,7 +53,7 @@ journals_df = pd.DataFrame()
 affiliations_df = pd.DataFrame()
 
 # Range - 0 to 4900, 4901 to 9800, 9801 to 14700, 14701 to last
-for i in range(0, 5):
+for i in range(0, 25):
 
     try:
         # Use AuthorSearch
@@ -66,8 +68,9 @@ for i in range(0, 5):
 
         # Use AuthorRetrieval
         au = AuthorRetrieval(scopus_id)
+
         # Get Current Affiliation ID
-        aff_current_ID = au.affiliation_current
+        aff_current_ID = scopus_author_df['affiliation_id']
 
         # Use ContentAffiliationRetrieval
         aff_current = ContentAffiliationRetrieval(aff_current_ID)
@@ -76,9 +79,9 @@ for i in range(0, 5):
         scopus_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)], 'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
                        'scopus_id': scopus_id, 'document_count': au.document_count, 'coauthor_count': au.coauthor_count, 'citation_count': au.citation_count,
                        'h_index': au.h_index, 'begin_publication_range': au.publication_range[0],
-                       'end_publication_range': au.publication_range[1], 'aff_current_name': aff_current.affiliation_name,
-                       'aff_current_city': aff_current.city, 'aff_current_state': aff_current.state,
-                       'aff_current_auth_count': aff_current.author_count, 'aff_current_doc_count': aff_current.document_count}
+                       'end_publication_range': au.publication_range[1], 'aff_current_name': scopus_author_df['affiliation'],
+                       'aff_current_city': scopus_author_df['city'], 'aff_current_state': aff_current.state,
+                       'aff_current_auth_count': scopus_author_df['country'], 'aff_current_doc_count': aff_current.document_count}
 
         # Append scopus dict to scopus df
         scopus_dict_df = pd.DataFrame.from_dict(scopus_dict)
