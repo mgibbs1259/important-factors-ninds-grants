@@ -6,7 +6,7 @@ from scopus import AuthorRetrieval
 from scopus import ContentAffiliationRetrieval
 
 
-# Create format name function - FIX
+# Create format name function
 def format_name(pi):
     if ',' not in pi:
         pass
@@ -37,6 +37,7 @@ scopus_pi = pd.Series(ninds_pi.apply(format_name))
 # Add scopus pi column to ninds data, purpose is joining dfs later on
 # ninds_df['scopus idx'] = scopus_pi
 # ninds_df.to_csv('ninds_scopus_idx_data.csv')
+
 
 # Get unique names from scopus pi
 scopus_search = scopus_pi.unique()
