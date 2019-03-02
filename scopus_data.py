@@ -52,9 +52,11 @@ scopus_search = scopus_pi.unique()
 # Get Scopus data
 
 scopus_df = pd.DataFrame()
+coauthors_df = pd.DataFrame()
+journals_df = pd.DataFrame()
 
 # Range - 0 to 4900, 4901 to 9800, 9801 to 14700, 14701 to last
-'''for i in range(0, len(scopus_search.iloc[0:4900, :])): 
+'''for i in range(0, len(scopus_search.iloc[0:25, :])): 
     
     try:
     
@@ -91,6 +93,22 @@ scopus_df = pd.DataFrame()
         scopus_df.append(scopus_dict_df)
         time.sleep(2)
     
+        # Get coauthors
+        coauth = pd.DataFrame(au.get_coauthors())
+        auth_coauth = [scopus_search[i] for n in range(couth.shape[0] + 1)]
+        coauth['name'] = pd.Series(auth_coauth)
+        
+        # Append coauthors to coauthors df
+        coauthors_df.append(coauth)
+        
+        # Get journals
+        journals = pd.DataFrame(au.get_document_eids(refresh=False))
+        auth_journals = [scopus_search[i] for n in range(journals.shape[0] + 1)]
+        journals['name'] = pd.Series(auth_journals)
+        
+        # Append coauthors to coauthors df
+        journals_df.append(journals)
+        
     except:
         
         # Create empty Scopus dictionary 
@@ -107,6 +125,8 @@ scopus_df = pd.DataFrame()
         scopus_df.append(scopus_dict_df)
         time.sleep(2)
 
-scopus_df.to_csv('scopus_data_0_4900.csv')
+scopus_df.to_csv('scopus_data_0_25.csv')
+coauthors_df.to_csv('coauthors_data_0_25.csv')
+journals_df.to_csv('journals_data_0_25.csv')
 '''
 
