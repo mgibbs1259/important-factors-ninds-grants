@@ -43,7 +43,6 @@ scopus_search = scopus_pi.unique()
 # print(len(scopus_search))
 # 15499 scopus search names
 
-print(scopus_search[0:25])
 
 # Get Scopus data
 
@@ -52,15 +51,14 @@ coauthors_df = pd.DataFrame()
 journals_df = pd.DataFrame()
 affiliations_df = pd.DataFrame()
 
-# Range - 0 to 4900, 4901 to 9800, 9801 to 14700, 14701 to last
-for i in range(0, 25):
+# Range - 0 to 250
+for i in range(0, 250):
 
     try:
         # Use AuthorSearch
         scopus_authors = AuthorSearch('AUTHLAST(' + scopus_search[i][1] + ') and AUTHFIRST(' + scopus_search[i][0] + ')', refresh = True)
         scopus_authors_df = pd.DataFrame(scopus_authors.authors)
         scopus_author_df = scopus_authors_df.iloc[0, :]
-        print(scopus_author_df)
 
         # Get Scopus ID
         eid = scopus_author_df['eid']
@@ -79,34 +77,27 @@ for i in range(0, 25):
         scopus_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)],
                        'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
                        'scopus_id': scopus_id,
+                       'begin_publication_range': au.publication_range[0],
+                       'end_publication_range': au.publication_range[1],
                        'document_count': au.document_count,
                        'coauthor_count': au.coauthor_count,
                        'citation_count': au.citation_count,
                        'h_index': au.h_index,
-                       'begin_publication_range': au.publication_range[0],
-                       'end_publication_range': au.publication_range[1],
-                       'aff_current_name_from_df': scopus_author_df['affiliation'],
-                       'aff_current_city_from_df': scopus_author_df['city'],
-                       'aff_current_country_from_df': scopus_author_df['country'],
-                       'aff_current_name_from_id': aff_current.affiliation_name,
-                       'aff_current_city_from_id': aff_current.city,
-                       'aff_current_state_from_id': aff_current.state,
-                       'aff_current_country_from_id': aff_current.country,
+                       'cited_by_count': au.cited_by_count,
+                       'aff_current_name_from_authsearch': scopus_author_df['affiliation'],
+                       'aff_current_city_from_authsearch': scopus_author_df['city'],
+                       'aff_current_country_from_authsearch': scopus_author_df['country'],
+                       'aff_current_name_from_affid': aff_current.affiliation_name,
+                       'aff_current_city_from_affid': aff_current.city,
+                       'aff_current_state_from_affid': aff_current.state,
+                       'aff_current_country_from_affid': aff_current.country,
                        'aff_current_auth_count': aff_current.author_count,
-                       'aff_current_doc_count': aff_current.document_count}
+                       'aff_current_doc_count': aff_current.document_count,
+                       'subject_areas': au.subject_areas}
 
         # Append scopus dict to scopus df
         scopus_dict_df = pd.DataFrame.from_dict(scopus_dict)
         scopus_df = scopus_df.append(scopus_dict_df)
-
-
-        # Get coauthors
-        coauth = pd.DataFrame(au.get_coauthors())
-        auth_coauth = [scopus_search[i] for n in range(coauth.shape[0] + 1)]
-        coauth['scopus_idx'] = pd.Series(auth_coauth)
-
-        # Append coauthors to coauthors df
-        coauthors_df = coauthors_df.append(coauth)
 
         # Get journals
         journals = pd.DataFrame(au.get_documents())
@@ -115,6 +106,14 @@ for i in range(0, 25):
 
         # Append coauthors to coauthors df
         journals_df = journals_df.append(journals)
+
+        # Get coauthors
+        coauth = pd.DataFrame(au.get_coauthors())
+        auth_coauth = [scopus_search[i] for n in range(coauth.shape[0] + 1)]
+        coauth['scopus_idx'] = pd.Series(auth_coauth)
+
+        # Append coauthors to coauthors df
+        coauthors_df = coauthors_df.append(coauth)
 
         # Get former affiliations
         former_aff = au.affiliation_history
@@ -128,12 +127,13 @@ for i in range(0, 25):
                                'aff_document_count': aff_ret.document_count}
             former_aff_dict_df = pd.DataFrame.from_dict(former_aff_dict)
             affiliations_df = affiliations_df.append(former_aff_dict_df)
+        print(i)
 
     except:
-        print('error')
+        print('error' + ' ' + str(i))
 
-scopus_df.to_csv('scopus_data_0_25.csv')
-coauthors_df.to_csv('coauthors_data_0_25.csv')
-journals_df.to_csv('journals_data_0_25.csv')
-affiliations_df.to_csv('affiliations_data_0_25.csv')
+scopus_df.to_csv('scopus_data_0_250.csv')
+journals_df.to_csv('journals_data_0_250.csv')
+coauthors_df.to_csv('coauthors_data_0_250.csv')
+affiliations_df.to_csv('affiliations_data_0_250.csv')
 
