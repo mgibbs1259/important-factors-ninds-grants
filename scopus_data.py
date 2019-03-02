@@ -25,7 +25,7 @@ def format_name(pi):
 
 
 # Get ninds pi
-ninds_df = pd.read_csv('data/ninds_data.csv')
+ninds_df = pd.read_csv('data/ninds_data/ninds_data.csv')
 ninds_df.columns = map(str.lower, ninds_df.columns)
 ninds_pi = ninds_df.loc[:, 'contact pi / project leader']
 
