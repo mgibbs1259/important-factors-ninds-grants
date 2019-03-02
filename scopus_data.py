@@ -93,8 +93,7 @@ for i in range(0, 250):
                        'aff_current_state_from_affid': aff_current.state,
                        'aff_current_country_from_affid': aff_current.country,
                        'aff_current_auth_count': aff_current.author_count,
-                       'aff_current_doc_count': aff_current.document_count,
-                       'subject_areas': au.subject_areas}
+                       'aff_current_doc_count': aff_current.document_count}
 
         # Append scopus dict to scopus df
         scopus_dict_df = pd.DataFrame.from_dict(scopus_dict)
