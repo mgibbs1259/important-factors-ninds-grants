@@ -116,7 +116,8 @@ for i in range(0, 250):
         former_aff = au.affiliation_history
         for aff in former_aff:
             aff_ret = ContentAffiliationRetrieval(aff)
-            former_aff_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)], 'aff_name': aff_ret.affiliation_name,
+            former_aff_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)],
+                               'aff_name': aff_ret.affiliation_name,
                                'aff_city': aff_ret.city,
                                'aff_state': aff_ret.state,
                                'aff_country': aff_ret.country,
