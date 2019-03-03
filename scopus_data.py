@@ -45,15 +45,15 @@ scopus_search = scopus_pi.unique()
 # 15499 scopus search names
 
 
-# Get Scopus data
+# Get scopus data
 
 scopus_df = pd.DataFrame()
 coauthors_df = pd.DataFrame()
 journals_df = pd.DataFrame()
 affiliations_df = pd.DataFrame()
 
-# Range - 0 to 250
-for i in range(0, 250):
+# Range - 0 to 250, 250 to 500, 500 to 750
+for i in range(500, 750):
 
     try:
         # Use AuthorSearch
@@ -61,20 +61,20 @@ for i in range(0, 250):
         scopus_authors_df = pd.DataFrame(scopus_authors.authors)
         scopus_author_df = scopus_authors_df.iloc[0, :]
 
-        # Get Scopus ID
+        # Get scopus ID
         eid = scopus_author_df['eid']
         scopus_id = eid[7:]
 
         # Use AuthorRetrieval
         au = AuthorRetrieval(scopus_id)
 
-        # Get Current Affiliation ID
+        # Get current affiliation ID
         aff_current_ID = scopus_author_df['affiliation_id']
 
         # Use ContentAffiliationRetrieval
         aff_current = ContentAffiliationRetrieval(aff_current_ID)
 
-        # Create Scopus dictionary
+        # Create scopus dictionary
         scopus_dict = {'scopus idx': [scopus_search[i] for n in range(0, 1)],
                        'name': scopus_search[i][0] + ' ' + scopus_search[i][1],
                        'scopus_id': scopus_id,
@@ -130,8 +130,8 @@ for i in range(0, 250):
     except:
         print('error' + ' ' + str(i))
 
-scopus_df.to_csv('scopus_data_0_250.csv')
-journals_df.to_csv('journals_data_0_250.csv')
-coauthors_df.to_csv('coauthors_data_0_250.csv')
-affiliations_df.to_csv('affiliations_data_0_250.csv')
+scopus_df.to_csv('scopus_data_500_750.csv')
+journals_df.to_csv('journals_data_500_750.csv')
+coauthors_df.to_csv('coauthors_data_500_750.csv')
+affiliations_df.to_csv('affiliations_data_500_750.csv')
 
