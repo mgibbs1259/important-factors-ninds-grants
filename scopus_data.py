@@ -44,8 +44,8 @@ scopus_pi = pd.Series(ninds_pi.apply(format_name))
 # scopus search is a list with the format: [('Sandra M', 'Aamodt') ('Ralph D', 'Aarons') ('Creed W', 'Abell') ...,]
 
 # use scopus search to run for missing
-missing = pd.read_csv("aff_missing.csv")
-
+missing = pd.read_csv("scopus_missing.csv")
+missing = missing.drop([0]) #only for scopus_missing.csv-- first row is nan
 def reformat_missing(pi):
     first_middle = pi.split(', ')[0].replace("'","").replace("(","")
     last = pi.split(', ')[1].replace("'","").replace(")","")
@@ -58,7 +58,7 @@ journals_df = pd.DataFrame()
 affiliations_df = pd.DataFrame()
 
 # Range - 0 to 250, 250 to 500, 500 to 750
-for i in range(0, 250):
+for i in range(1500, 2000):
 
     try:
         # Use AuthorSearch
@@ -140,8 +140,8 @@ for i in range(0, 250):
 # coauthors_df.to_csv('coauthors_data_0_250_rerun.csv')
 # affiliations_df.to_csv('affiliations_data_0_250_rerun.csv')
 
-scopus_df.to_csv('scopus_data_missing_0_250.csv')
-journals_df.to_csv('journals_data_missing_0_250.csv')
-coauthors_df.to_csv('coauthors_data_missing_0_250.csv')
-affiliations_df.to_csv('affiliations_data_missing_0_250.csv')
+scopus_df.to_csv('scopus_data_missing_1500_2000_scopus.csv')
+journals_df.to_csv('journals_data_missing_1500_2000_scopus.csv')
+coauthors_df.to_csv('coauthors_data_missing_1500_2000_scopus.csv')
+affiliations_df.to_csv('affiliations_data_missing_1500_2000_scopus.csv')
 
