@@ -29,10 +29,8 @@ ninds_df = pd.read_csv('data/ninds_data/ninds_data.csv')
 ninds_df.columns = map(str.lower, ninds_df.columns)
 ninds_pi = ninds_df.loc[:, 'contact pi / project leader']
 
-
 # Apply format name function to ninds pi
 scopus_pi = pd.Series(ninds_pi.apply(format_name))
-
 
 # Add scopus pi column to ninds data, purpose is joining dfs later on
 # ninds_df['scopus idx'] = scopus_pi
@@ -40,19 +38,31 @@ scopus_pi = pd.Series(ninds_pi.apply(format_name))
 
 
 # Get unique names from scopus pi
-scopus_search = scopus_pi.unique()
+# scopus_search = scopus_pi.unique()
 # print(len(scopus_search))
 # 15499 scopus search names
+# scopus search is a list with the format: [('Sandra M', 'Aamodt') ('Ralph D', 'Aarons') ('Creed W', 'Abell') ...,]
 
+# use scopus search to run for missing
+missing = pd.read_csv("aff_missing.csv")
 
-# Get scopus data
+def reformat_missing(pi):
+    first_middle = pi.split(', ')[0].replace("'","").replace("(","")
+    last = pi.split(', ')[1].replace("'","").replace(")","")
+    return first_middle, last
+scopus_search = pd.Series(missing.iloc[:,1].apply(reformat_missing))
 
 scopus_df = pd.DataFrame()
 coauthors_df = pd.DataFrame()
 journals_df = pd.DataFrame()
 affiliations_df = pd.DataFrame()
 
+<<<<<<< HEAD
 for i in range(15000, 15500):
+=======
+# Range - 0 to 250, 250 to 500, 500 to 750
+for i in range(0, 250):
+>>>>>>> 3cb21bb13ce43f8bc51d395c5557c2d1852bbb76
 
     try:
         # Use AuthorSearch
@@ -129,8 +139,20 @@ for i in range(15000, 15500):
     except:
         print('error' + ' ' + str(i))
 
+<<<<<<< HEAD
 scopus_df.to_csv('scopus_data_15000_15500.csv')
 journals_df.to_csv('journals_data_15000_15500.csv')
 coauthors_df.to_csv('coauthors_data_15000_15500.csv')
 affiliations_df.to_csv('affiliations_data_15000_15500.csv')
+=======
+# scopus_df.to_csv('scopus_data_0_250_rerun.csv')
+# journals_df.to_csv('journals_data_0_250_rerun.csv')
+# coauthors_df.to_csv('coauthors_data_0_250_rerun.csv')
+# affiliations_df.to_csv('affiliations_data_0_250_rerun.csv')
+
+scopus_df.to_csv('scopus_data_missing_0_250.csv')
+journals_df.to_csv('journals_data_missing_0_250.csv')
+coauthors_df.to_csv('coauthors_data_missing_0_250.csv')
+affiliations_df.to_csv('affiliations_data_missing_0_250.csv')
+>>>>>>> 3cb21bb13ce43f8bc51d395c5557c2d1852bbb76
 
