@@ -20,3 +20,5 @@ ninds_scopus["city_match"] = np.where(ninds_scopus["city_x"] == ninds_scopus["ci
 ninds_scopus["state_match"] = np.where(ninds_scopus["state_x"] == ninds_scopus["state_y"], 1,0)
 ninds_scopus["keep"] = np.where((ninds_scopus["city_match"] == 1) | (ninds_scopus["state_match"] == 1), 1, 0)
 ninds_keep = ninds_scopus[ninds_scopus["keep"] == 1]
+
+# ninds_keep.to_csv("check_ninds.csv")
